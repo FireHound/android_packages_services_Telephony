@@ -487,7 +487,7 @@ public class MobileNetworkSettings extends PreferenceActivity
                 TelephonyIntents.ACTION_RADIO_TECHNOLOGY_CHANGED);
         registerReceiver(mPhoneChangeReceiver, intentFilter);
         int initialSlotId = getIntent().getIntExtra(EXTRA_INITIAL_SLOT_TAB , -1);
-        if (initialSlotId != -1) {
+        if (initialSlotId != -1 && mTabHost != null) {
             mTabHost.setCurrentTab(initialSlotId);
         }
         if (DBG) log("onCreate:-");
@@ -1401,6 +1401,9 @@ public class MobileNetworkSettings extends PreferenceActivity
                             break;
                     }
                 }
+            } else {
+                ev[0] = com.android.phone.R.array.enabled_networks_cdma_no_lte_choices;
+                ev[1] = com.android.phone.R.array.enabled_networks_cdma_no_lte_values;
             }
         } else if (phoneType == PhoneConstants.PHONE_TYPE_GSM) {
             if (isSupportTdscdma(context, subId)) {
@@ -1428,6 +1431,9 @@ public class MobileNetworkSettings extends PreferenceActivity
                 ev[0] = select;
                 ev[1] = com.android.phone.R.array.enabled_networks_values;
             }
+        } else if (phoneType == PhoneConstants.PHONE_TYPE_NONE) {
+            ev[0] = com.android.phone.R.array.enabled_networks_choices;
+            ev[1] = com.android.phone.R.array.enabled_networks_values;
         } else {
             throw new IllegalStateException("Unexpected phone type: " + phoneType);
         }
